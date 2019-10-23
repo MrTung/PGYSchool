@@ -54,7 +54,6 @@
       ref="editUserDialog"
       :isShowDialog="dialogTableVisible"
       v-on:editDialog="editDialogListener"
-      v-on:loginOut="loginOutListener"
     ></Changepwd>
   </div>
 </template>

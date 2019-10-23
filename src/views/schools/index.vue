@@ -1,12 +1,5 @@
 <template>
   <div class="tab-container">
-    <el-tag>mounted times ：{{ createdTimes }}</el-tag>
-    <el-alert
-      :closable="false"
-      style="width:200px;display:inline-block;vertical-align: middle;margin-left:30px;"
-      title="Tab with keep-alive"
-      type="success"
-    />
     <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
       <el-tab-pane
         v-for="item in tabMapOptions"
@@ -31,13 +24,11 @@ export default {
   data() {
     return {
       tabMapOptions: [
-        { label: "China", key: "CN" },
-        { label: "USA", key: "US" },
-        { label: "Japan", key: "JP" },
-        { label: "Eurozone", key: "EU" }
+        { label: "班级管理", key: "CN" },
+        { label: "学生管理", key: "US" },
+        { label: "教师管理", key: "JP" }
       ],
-      activeName: "CN",
-      createdTimes: 0
+      activeName: "CN"
     };
   },
   watch: {
@@ -53,9 +44,7 @@ export default {
     }
   },
   methods: {
-    showCreatedTimes() {
-      this.createdTimes = this.createdTimes + 1;
-    }
+    showCreatedTimes() {}
   }
 };
 </script>
