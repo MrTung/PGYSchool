@@ -105,6 +105,28 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/platform',
+    component: Layout,
+    meta: {
+      title: '平台管理',
+      icon: 'tab'
+    },
+    children: [
+      {
+        path: '/platform/auth',
+        component: () => import('@/views/platform/index'),
+        name: 'Auth',
+        meta: { title: '用户权限', icon: 'tab' }
+      },
+      {
+        path: '/platform/Guide',
+        component: () => import('@/views/guide/index'),
+        name: 'Guide',
+        meta: { title: '课程管理', icon: 'guide', noCache: true }
+      }
+    ]
+  },
   //   {
   //     path: '/documentation',
   //     component: Layout,
