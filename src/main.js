@@ -41,20 +41,11 @@ import VueAxios from 'vue-axios'
 // 返回数据拦截处理
 axios.interceptors.response.use(response => {
   if (response.data) {
-    if (response.data.errcode === '3') {
-      // console.log('未登录,重新登录');
-      // v.$alert('会话过期请重新登录', '提示', {
-      //   confirmButtonText: '确定',
-      //   callback: action => {
-      //     store.commit("userinfo", null);
-      //     removeUserinfo();
-      //   }
-      // });
-      // return;
-    } else if (response.data.errcode === '0') {
+    if (response.data.code === 500) {
+      v.$message.error(response.data.msg);
       return {
         code: 0,
-        msg: response.data.errmsg
+        msg: response.data.msg
       }
     } else {
       return {
@@ -80,7 +71,7 @@ Object.keys(filters).forEach(key => {
 
 Vue.config.productionTip = false
 
-new Vue({
+const v = new Vue({
   el: '#app',
   router,
   store,

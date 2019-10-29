@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="新增用户"
+    title="新增角色"
     :visible.sync="isShowDialog"
     width="25%"
     :before-close="handleClose"
@@ -9,27 +9,11 @@
   >
     <div class="app-container" style="padding-top:0px;">
       <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="用户名">
-          <el-input v-model="form.loginName"></el-input>
+        <el-form-item label="角色名称">
+          <el-input v-model="form.name" placeholder="请输入角色名称"></el-input>
         </el-form-item>
-        <el-form-item label="真实姓名" prop="realName">
-          <el-input v-model="form.realName"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" prop="password1">
-          <el-input v-model="form.password1"></el-input>
-        </el-form-item>
-        <el-form-item label="选择角色" prop="roleId">
-          <el-select v-model="form.roleId" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
+        <el-form-item label="开放角色" prop="salary">
+          <el-switch v-model="form.openStatus" active-value="100" inactive-value="0"></el-switch>
         </el-form-item>
         <el-form-item class="form-item">
           <el-button type="primary" @click="add()">确定</el-button>
@@ -59,40 +43,11 @@ export default {
   },
   data() {
     return {
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
-        }
-      ],
-      value: "",
-
       taskInfo: null,
 
       form: {
-        id: "",
-        loginName: "",
-        password: "",
-        password1: "",
-        realName: "",
-        roleId: "",
-        roleName: ""
+        openStatus: "0",
+        name: ""
       }
     };
   },
@@ -111,7 +66,7 @@ export default {
       this.$emit("editDialog", false);
     },
     add() {
-      this.axios.post(this.urls.usersave, this.form).then(response => {
+      this.axios.post(this.urls.rolesave, this.form).then(response => {
         // this.loading = false;
         // if (response.code == 0) return;
       });
@@ -123,6 +78,11 @@ export default {
 <style scoped lang="scss">
 .line {
   text-align: center;
+}
+
+.formview {
+  padding: 0 30px;
+  padding-top: 0px;
 }
 
 .sub-navbar {

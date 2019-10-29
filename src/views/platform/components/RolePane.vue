@@ -5,7 +5,7 @@
         <el-input placeholder="请输入角色名" v-model="rolename"></el-input>
       </el-form-item>
       <el-form-item class="form-item">
-        <el-button type="primary" @click="fetchData('ruleForm')">查询</el-button>
+        <el-button type="primary" @click="getList()">查询</el-button>
         <el-button type="primary" @click="addInfo()">新增</el-button>
       </el-form-item>
     </el-form>
@@ -58,14 +58,40 @@
           <el-tag :type="row.status | statusFilter">{{ row.status }}</el-tag>
         </template>
       </el-table-column>
+
+      <el-table-column align="center" label="操作" width="95">
+        <template>
+          <el-dropdown trigger="click">
+            <span class="el-dropdown-link">
+              下拉菜单
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item icon="el-icon-plus">权限设置</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-circle-plus">查看</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-circle-plus-outline">删除</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </template>
+      </el-table-column>
     </el-table>
+
+    <NewDialog
+      ref="editUserDialog"
+      :isShowDialog="dialogTableVisible"
+      :taskData="selectRow"
+      v-on:editDialog="editDialogListener"
+    ></NewDialog>
   </div>
 </template>
 
 <script>
 import { fetchList } from "@/api/article";
+import NewDialog from "./roleinfodialog";
 
 export default {
+  components: { NewDialog },
+
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -84,6 +110,9 @@ export default {
   },
   data() {
     return {
+      dialogTableVisible: false,
+      selectRow: {},
+
       list: null,
       rolename: "",
       listQuery: {
@@ -92,20 +121,45 @@ export default {
         type: this.type,
         sort: "+id"
       },
-      loading: false
+      loading: false,
+
+      form: {
+        pageNum: "1",
+        pageSize: "10"
+      }
     };
   },
   created() {
     this.getList();
   },
   methods: {
+    //获取数据
     getList() {
       this.loading = true;
-      this.$emit("create"); // for test
-      fetchList(this.listQuery).then(response => {
-        this.list = response.data.items;
+      this.axios.get(this.urls.getrolelist, this.form).then(response => {
         this.loading = false;
       });
+    },
+    addInfo(index, row) {
+      this.dialogTableVisible = true;
+      this.selectRow = row;
+    },
+
+    //删除
+    deleteData(index, row, type) {
+      this.$confirm("是否确认删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.axios.put(this.urls.delrole + row.id).then(response => {
+          this.getList();
+        });
+      });
+    },
+
+    editDialogListener(bol) {
+      this.dialogTableVisible = bol;
     }
   }
 };

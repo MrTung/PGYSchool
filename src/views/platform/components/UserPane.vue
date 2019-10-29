@@ -77,7 +77,6 @@
 </template>
 
 <script>
-import { fetchList } from "@/api/article";
 import NewDialog from "./userinfodialog";
 
 export default {
@@ -120,10 +119,12 @@ export default {
   },
   methods: {
     getList() {
+      //角色列表
+      this.axios.get(this.urls.getrolefindList, this.form).then(response => {});
+
+      //获取用户列表
       this.loading = true;
-      this.$emit("create"); // for test
-      fetchList(this.listQuery).then(response => {
-        this.list = response.data.items;
+      this.axios.get(this.urls.getuserlist, this.form).then(response => {
         this.loading = false;
       });
     },
