@@ -18,7 +18,7 @@
         </span>
         <el-input
           ref="username"
-          v-model="loginForm.username"
+          v-model="loginForm.loginName"
           placeholder="Username"
           name="username"
           type="text"
@@ -106,11 +106,11 @@ export default {
     };
     return {
       loginForm: {
-        username: "admin",
+        loginName: "admin",
         password: "admin"
       },
       loginRules: {
-        username: [
+        loginName: [
           { required: true, trigger: "blur", validator: validateUsername }
         ],
         password: [
@@ -141,8 +141,8 @@ export default {
     // window.addEventListener('storage', this.afterQRScan)
   },
   mounted() {
-    if (this.loginForm.username === "") {
-      this.$refs.username.focus();
+    if (this.loginForm.loginName === "") {
+      this.$refs.loginName.focus();
     } else if (this.loginForm.password === "") {
       this.$refs.password.focus();
     }
@@ -181,10 +181,18 @@ export default {
         if (valid) {
           this.loading = true;
           this.axios.post(this.urls.login, this.loginForm).then(response => {
-            // this.loading = false;
-            // if (response.code == 0) return;
+            if (response.code == 0) return;
+
+            this.axios.defaults.headers["token"] = response.data.token;
+
+            this.$store.dispatch("user/saveUserinfo", response.data);
+
+            let p = {
+              username: "admin",
+              password: "admin"
+            };
             this.$store
-              .dispatch("user/login", this.loginForm)
+              .dispatch("user/login", p)
               .then(() => {
                 this.$router.push({
                   path: this.redirect || "/",

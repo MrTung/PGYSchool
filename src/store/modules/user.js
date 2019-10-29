@@ -1,5 +1,8 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+
+import { getRealToken, setRealToken, removeRealToken } from '@/utils/auth'
+
 import router, { resetRouter } from '@/router'
 
 const state = {
@@ -7,7 +10,8 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  userInfo: {},
 }
 
 const mutations = {
@@ -25,7 +29,10 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
-  }
+  },
+  SET_USERINFO: (state, userInfo) => {
+    state.userInfo = userInfo
+  },
 }
 
 const actions = {
@@ -42,6 +49,11 @@ const actions = {
         reject(error)
       })
     })
+  },
+
+  saveUserinfo({ commit }, userInfo) {
+    commit('SET_USERINFO', userInfo)
+    setRealToken(userInfo.token)
   },
 
   // get user info

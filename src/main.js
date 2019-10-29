@@ -50,14 +50,18 @@ axios.interceptors.response.use(response => {
     } else {
       return {
         code: 1,
-        data: response.data.data[0]
+        data: response.data.data
       }
     }
   } else {
   }
 }, error => Promise.reject(error.response))
-// axios.defaults.withCredentials = true;
-// axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8;application/json;';
+axios.defaults.withCredentials = true;
+
+axios.defaults.timeout = 10000; //暂时禁用避免uc浏览器出错
+
+axios.defaults.headers["token"] = Cookies.get('Real-Token');
+
 Vue.use(VueAxios, axios)
 
 Vue.use(Element, {
