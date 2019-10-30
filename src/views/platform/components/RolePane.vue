@@ -39,18 +39,18 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="195">
-        <template>
-          <el-button size="mini" type="primary" @click="operationHandle(scope.$index, scope.row)">编辑</el-button>
+        <template slot-scope="scope">
+          <el-button size="mini" type="primary" @click="edit(scope.$index, scope.row)">编辑</el-button>
           <span style="color:lightgray;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-          <el-dropdown trigger="click">
+          <el-dropdown trigger="click" @command="handleCommand">
             <span class="el-dropdown-link">
               更多
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item icon="el-icon-plus">权限设置</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-circle-plus">查看</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-circle-plus-outline">删除</el-dropdown-item>
+              <el-dropdown-item command="1">权限设置</el-dropdown-item>
+              <el-dropdown-item command="2">查看</el-dropdown-item>
+              <el-dropdown-item @click.native="deleteData(scope.row)">删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -122,19 +122,31 @@ export default {
         this.list = response.data.content;
       });
     },
-    addInfo(index, row) {
+    addInfo() {
       this.dialogTableVisible = true;
-      this.selectRow = row;
+      this.selectRow = null;
+    },
+    handleCommand(command) {
+      switch (command) {
+        case 1:
+          break;
+        case 2:
+          break;
+        case 3:
+          break;
+        default:
+          break;
+      }
     },
 
     //删除
-    deleteData(index, row, type) {
+    deleteData(row) {
       this.$confirm("是否确认删除?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        this.axios.put(this.urls.delrole + row.id).then(response => {
+        this.axios.post(this.urls.delrole + row.id).then(response => {
           this.getList();
         });
       });
@@ -143,6 +155,10 @@ export default {
     editDialogListener(bol) {
       this.dialogTableVisible = bol;
       this.getList();
+    },
+    edit(index, row) {
+      this.dialogTableVisible = true;
+      this.selectRow = row;
     }
   }
 };

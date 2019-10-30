@@ -37,16 +37,20 @@ export default {
   watch: {
     taskData: function(newValue, oldValue) {
       if (newValue) {
-        this.taskInfo = newValue;
-        this.form = this.taskInfo;
+        this.form = JSON.parse(JSON.stringify(newValue));
+      } else {
+        this.form = {
+          id: "",
+          openStatus: "0",
+          name: ""
+        };
       }
     }
   },
   data() {
     return {
-      taskInfo: null,
-
       form: {
+        id: "",
         openStatus: "0",
         name: ""
       },

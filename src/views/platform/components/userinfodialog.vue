@@ -10,16 +10,16 @@
     <div class="app-container" style="padding-top:0px;">
       <el-form ref="form" :model="form" label-width="80px" :rules="rules">
         <el-form-item label="用户名" prop="loginName">
-          <el-input v-model="form.loginName" placeholder="由6-24位英文、数字或下划线组成"></el-input>
+          <el-input v-model="form.loginName" :disabled="isedit" placeholder="由6-24位英文、数字或下划线组成"></el-input>
         </el-form-item>
         <el-form-item label="真实姓名" prop="realName">
           <el-input v-model="form.realName" placeholder="请填写用户真实姓名"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" placeholder="请输入6-18位密码"></el-input>
+          <el-input v-model="form.password" type="password" placeholder="请输入6-18位密码"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="password1">
-          <el-input v-model="form.password1" placeholder="请再次输入密码"></el-input>
+          <el-input v-model="form.password1" type="password" placeholder="请再次输入密码"></el-input>
         </el-form-item>
         <el-form-item label="选择角色" prop="roleId">
           <el-select v-model="form.roleId" placeholder="请选择角色">
@@ -47,8 +47,21 @@ export default {
   watch: {
     taskData: function(newValue, oldValue) {
       if (newValue) {
-        this.taskInfo = newValue;
-        this.form = this.taskInfo;
+        this.form = JSON.parse(JSON.stringify(newValue));
+        this.form.password1 = newValue.password;
+        this.isedit = true;
+      } else {
+        this.isedit = false;
+
+        this.form = {
+          id: "",
+          loginName: "",
+          password: "",
+          password1: "",
+          realName: "",
+          roleId: "",
+          roleName: ""
+        };
       }
     }
   },
@@ -77,6 +90,7 @@ export default {
         }
       ],
       value: "",
+      isedit: false,
 
       taskInfo: null,
       roleList: [],

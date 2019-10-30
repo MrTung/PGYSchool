@@ -36,8 +36,8 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="230">
-        <template>
-          <el-button size="mini" type="primary" @click="operationHandle(scope.$index, scope.row)">编辑</el-button>
+        <template slot-scope="scope">
+          <el-button size="mini" type="primary" @click="edit(scope.$index, scope.row)">编辑</el-button>
           <span style="color:lightgray;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
           <el-dropdown trigger="click">
             <span class="el-dropdown-link">
@@ -45,9 +45,9 @@
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item icon="el-icon-plus">权限设置</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-circle-plus">查看</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-circle-plus-outline">删除</el-dropdown-item>
+              <el-dropdown-item>修改密码</el-dropdown-item>
+              <!-- <el-dropdown-item>查看</el-dropdown-item>
+              <el-dropdown-item>删除</el-dropdown-item>-->
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -125,7 +125,11 @@ export default {
       });
     },
 
-    addInfo(index, row) {
+    addInfo() {
+      this.dialogTableVisible = true;
+      this.selectRow = null;
+    },
+    edit(index, row) {
       this.dialogTableVisible = true;
       this.selectRow = row;
     },
