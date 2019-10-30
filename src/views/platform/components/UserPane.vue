@@ -20,6 +20,11 @@
           <span>{{ row.loginName }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="真实姓名">
+        <template slot-scope="scope">
+          <span>{{ scope.row.realName }}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="角色">
         <template slot-scope="scope">
           <span>{{ scope.row.roleName }}</span>
@@ -38,7 +43,7 @@
       <el-table-column align="center" label="操作" width="230">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="edit(scope.$index, scope.row)">编辑</el-button>
-          <span style="color:lightgray;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+          <!-- <span style="color:lightgray;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
           <el-dropdown trigger="click">
             <span class="el-dropdown-link">
               更多
@@ -46,10 +51,8 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>修改密码</el-dropdown-item>
-              <!-- <el-dropdown-item>查看</el-dropdown-item>
-              <el-dropdown-item>删除</el-dropdown-item>-->
             </el-dropdown-menu>
-          </el-dropdown>
+          </el-dropdown>-->
         </template>
       </el-table-column>
     </el-table>

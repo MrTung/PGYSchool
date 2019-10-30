@@ -83,28 +83,28 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/schools',
-    component: Layout,
-    meta: {
-      title: '网校管理',
-      icon: 'tab'
-    },
-    children: [
-      {
-        path: '/schools/user',
-        component: () => import('@/views/schools/index'),
-        name: 'Tab',
-        meta: { title: '用户管理', icon: 'tab' }
-      },
-      {
-        path: '/schools/Guide',
-        component: () => import('@/views/guide/index'),
-        name: 'Guide',
-        meta: { title: '课程管理', icon: 'guide', noCache: true }
-      }
-    ]
-  },
+  // {
+  //   path: '/schools',
+  //   component: Layout,
+  //   meta: {
+  //     title: '网校管理',
+  //     icon: 'tab'
+  //   },
+  //   children: [
+  //     {
+  //       path: '/schools/user',
+  //       component: () => import('@/views/schools/index'),
+  //       name: 'Tab',
+  //       meta: { title: '用户管理', icon: 'tab' }
+  //     },
+  //     {
+  //       path: '/schools/Guide',
+  //       component: () => import('@/views/guide/index'),
+  //       name: 'Guide',
+  //       meta: { title: '课程管理', icon: 'guide', noCache: true }
+  //     }
+  //   ]
+  // },
   {
     path: '/platform',
     component: Layout,
@@ -120,11 +120,11 @@ export const constantRoutes = [
         meta: { title: '用户权限', icon: 'tab' }
       },
       {
-        path: '/platform/Guide',
-        component: () => import('@/views/guide/index'),
-        name: 'Guide',
-        meta: { title: '课程管理', icon: 'guide', noCache: true }
-      }
+        path: '/platform/schools',
+        component: () => import('@/views/schools/index'),
+        name: 'Tab',
+        meta: { title: '网校管理', icon: 'tab' }
+      },
     ]
   },
   //   {

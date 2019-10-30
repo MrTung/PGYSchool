@@ -47,8 +47,8 @@ export default {
   watch: {
     taskData: function(newValue, oldValue) {
       if (newValue) {
+        newValue.password1 = newValue.password;
         this.form = JSON.parse(JSON.stringify(newValue));
-        this.form.password1 = newValue.password;
         this.isedit = true;
       } else {
         this.isedit = false;
@@ -67,32 +67,9 @@ export default {
   },
   data() {
     return {
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
-        }
-      ],
       value: "",
       isedit: false,
 
-      taskInfo: null,
       roleList: [],
       form: {
         id: "",
