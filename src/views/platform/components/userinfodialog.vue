@@ -8,27 +8,22 @@
     :close-on-press-escape="false"
   >
     <div class="app-container" style="padding-top:0px;">
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="用户名">
-          <el-input v-model="form.loginName"></el-input>
+      <el-form ref="form" :model="form" label-width="80px" :rules="rules">
+        <el-form-item label="用户名" prop="loginName">
+          <el-input v-model="form.loginName" placeholder="由6-24位英文、数字或下划线组成"></el-input>
         </el-form-item>
         <el-form-item label="真实姓名" prop="realName">
-          <el-input v-model="form.realName"></el-input>
+          <el-input v-model="form.realName" placeholder="请填写用户真实姓名"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password"></el-input>
+          <el-input v-model="form.password" placeholder="请输入6-18位密码"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="password1">
-          <el-input v-model="form.password1"></el-input>
+          <el-input v-model="form.password1" placeholder="请再次输入密码"></el-input>
         </el-form-item>
         <el-form-item label="选择角色" prop="roleId">
-          <el-select v-model="form.roleId" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
+          <el-select v-model="form.roleId" placeholder="请选择角色">
+            <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item class="form-item">
@@ -84,7 +79,7 @@ export default {
       value: "",
 
       taskInfo: null,
-
+      roleList: [],
       form: {
         id: "",
         loginName: "",
@@ -93,6 +88,22 @@ export default {
         realName: "",
         roleId: "",
         roleName: ""
+      },
+
+      rules: {
+        loginName: [
+          { required: true, trigger: "blur", message: "请输入角色名称" }
+        ],
+        realName: [
+          { required: true, trigger: "blur", message: "请输入角色名称" }
+        ],
+        password: [
+          { required: true, trigger: "blur", message: "请输入角色名称" }
+        ],
+        password1: [
+          { required: true, trigger: "blur", message: "请输入角色名称" }
+        ],
+        roleId: [{ required: true, trigger: "blur", message: "请输入角色名称" }]
       }
     };
   },
@@ -102,7 +113,12 @@ export default {
     //   return userinfo.balance;
     // }
   },
-  created() {},
+  created() {
+    //角色列表
+    this.axios.get(this.urls.getrolefindList, this.form).then(response => {
+      this.roleList = response.data;
+    });
+  },
   mounted() {},
   methods: {
     //dialog关闭按钮
@@ -111,9 +127,17 @@ export default {
       this.$emit("editDialog", false);
     },
     add() {
-      this.axios.post(this.urls.usersave, this.form).then(response => {
-        // this.loading = false;
-        // if (response.code == 0) return;
+      if (this.form.password1 != this.form.password)
+        return this.$message.error("两次密码输入不一样");
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          this.axios.post(this.urls.usersave, this.form).then(response => {
+            this.$emit("editDialog", false);
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
       });
     }
   }

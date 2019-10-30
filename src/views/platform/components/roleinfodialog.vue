@@ -8,12 +8,12 @@
     :close-on-press-escape="false"
   >
     <div class="app-container" style="padding-top:0px;">
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="角色名称">
+      <el-form ref="form" :model="form" label-width="80px" :rules="rules">
+        <el-form-item label="角色名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入角色名称"></el-input>
         </el-form-item>
-        <el-form-item label="开放角色" prop="salary">
-          <el-switch v-model="form.openStatus" active-value="100" inactive-value="0"></el-switch>
+        <el-form-item label="开放角色" prop="openStatus">
+          <el-switch v-model="form.openStatus" active-value="1" inactive-value="0"></el-switch>
         </el-form-item>
         <el-form-item class="form-item">
           <el-button type="primary" @click="add()">确定</el-button>
@@ -33,6 +33,7 @@ export default {
     isShowDialog: Boolean,
     taskData: { type: Object }
   },
+
   watch: {
     taskData: function(newValue, oldValue) {
       if (newValue) {
@@ -48,6 +49,9 @@ export default {
       form: {
         openStatus: "0",
         name: ""
+      },
+      rules: {
+        name: [{ required: true, trigger: "blur", message: "请输入角色名称" }]
       }
     };
   },
@@ -66,9 +70,15 @@ export default {
       this.$emit("editDialog", false);
     },
     add() {
-      this.axios.post(this.urls.rolesave, this.form).then(response => {
-        // this.loading = false;
-        // if (response.code == 0) return;
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          this.axios.post(this.urls.rolesave, this.form).then(response => {
+            this.$emit("editDialog", false);
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
       });
     }
   }

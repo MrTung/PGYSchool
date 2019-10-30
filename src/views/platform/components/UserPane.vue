@@ -35,11 +35,13 @@
           <el-tag>{{ row.state }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" width="195">
+      <el-table-column align="center" label="操作" width="230">
         <template>
+          <el-button size="mini" type="primary" @click="operationHandle(scope.$index, scope.row)">编辑</el-button>
+          <span style="color:lightgray;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
           <el-dropdown trigger="click">
             <span class="el-dropdown-link">
-              下拉菜单
+              更多
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
@@ -129,8 +131,18 @@ export default {
     },
     editDialogListener(bol) {
       this.dialogTableVisible = bol;
+      this.getList();
     }
   }
 };
 </script>
+<style>
+.el-dropdown-link {
+  cursor: pointer;
+  color: #409eff;
+}
+.el-icon-arrow-down {
+  font-size: 12px;
+}
+</style>
 
